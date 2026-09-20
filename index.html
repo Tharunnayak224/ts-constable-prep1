@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS Constable Master Prep</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--primary:#14532d;--accent:#f59e0b;--line:#e5e7eb;--danger:#dc2626}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+.logo{font-weight:900;color:var(--primary);font-size:20px}.logo span{color:var(--accent)}
+.menu{display:flex;gap:8px;flex-wrap:wrap}.menu button{border:0;background:transparent;padding:9px 11px;border-radius:9px;cursor:pointer;color:#344054;font-weight:600}.menu button.active,.menu button:hover{background:#dcfce7;color:var(--primary)}
+main{max-width:1180px;margin:auto;padding:24px 18px 60px}.page{display:none}.page.active{display:block}
+.hero{background:linear-gradient(135deg,#14532d,#166534);color:#fff;border-radius:22px;padding:34px;margin-bottom:22px;position:relative;overflow:hidden}.hero h1{font-size:38px;margin:0 0 10px}.hero p{max-width:720px;color:#dcfce7}.badge{display:inline-block;background:#f59e0b;color:#111827;padding:6px 10px;border-radius:999px;font-weight:800;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 3px 12px rgba(16,24,40,.04)}.card h3{margin:0 0 8px}.muted{color:var(--muted)}.big{font-size:28px;font-weight:900}.progress{height:9px;background:#e5e7eb;border-radius:20px;overflow:hidden}.progress i{display:block;height:100%;background:#16a34a}
+.btn{border:0;border-radius:10px;padding:10px 14px;background:var(--primary);color:#fff;font-weight:800;cursor:pointer}.btn.alt{background:#f59e0b;color:#111827}.btn.light{background:#eef2ff;color:#3730a3}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}.section-title h2{margin:0}
+.subject{cursor:pointer}.subject:hover{transform:translateY(-2px);transition:.15s}.icon{font-size:28px}.tag{display:inline-block;background:#f2f4f7;padding:4px 8px;border-radius:999px;font-size:12px;margin:3px}
+.list{padding-left:20px;line-height:1.8}.topic-row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:11px 0}.topic-row:last-child{border:0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{background:#f9fafb}
+.day{border-left:5px solid #16a34a}.done{opacity:.65;background:#f0fdf4}.day input{width:18px;height:18px}
+.quiz{max-width:800px}.option{display:block;width:100%;text-align:left;margin:9px 0;padding:13px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer}.option:hover{background:#f8fafc}.option.correct{border-color:#16a34a;background:#dcfce7}.option.wrong{border-color:#dc2626;background:#fee2e2}
+.alert{padding:12px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.search{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:8px 0 14px}
+footer{text-align:center;color:var(--muted);padding:25px}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.grid3{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.hero h1{font-size:30px}.menu{display:none}header{position:sticky}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.hero{padding:25px 20px}.card{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">TS <span>Constable</span> Master Prep</div>
+  <nav class="menu" id="menu"></nav>
+</header>
+<main>
+
+<section id="home" class="page active">
+  <div class="hero">
+    <span class="badge">2026 PREPARATION</span>
+    <h1>Telangana Constable Master Prep</h1>
+    <p>One mobile-friendly study dashboard for syllabus, 90-day planning, Telangana GK, PYQs, mocks, current affairs and progress tracking.</p>
+    <button class="btn alt" onclick="showPage('plan')">Start 90-Day Plan →</button>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="muted">Study Days</div><div class="big" id="daysDone">0/90</div></div>
+    <div class="card"><div class="muted">Topics Completed</div><div class="big" id="topicsDone">0</div></div>
+    <div class="card"><div class="muted">Mock Attempts</div><div class="big" id="mockDone">0</div></div>
+    <div class="card"><div class="muted">Overall Progress</div><div class="big" id="overall">0%</div></div>
+  </div>
+  <div class="section-title"><h2>Today's Mission</h2><button class="btn light" onclick="showPage('plan')">Open Plan</button></div>
+  <div class="grid3" id="today"></div>
+  <div class="section-title"><h2>Core Sections</h2></div>
+  <div class="grid3">
+    <div class="card subject" onclick="showPage('syllabus')"><div class="icon">📚</div><h3>Complete Syllabus</h3><p class="muted">All major subjects and chapters.</p></div>
+    <div class="card subject" onclick="showPage('pyq')"><div class="icon">📝</div><h3>PYQs</h3><p class="muted">2015, 2018, 2022 and 2023 papers.</p></div>
+    <div class="card subject" onclick="showPage('mocks')"><div class="icon">🎯</div><h3>Mock Tests</h3><p class="muted">Topic, subject and full-length practice.</p></div>
+  </div>
+</section>
+
+<section id="syllabus" class="page">
+  <div class="section-title"><h2>📚 Complete Syllabus</h2><span class="badge">Prelims + Final</span></div>
+  <input class="search" id="sySearch" placeholder="Search subject or topic..." oninput="renderSyllabus()">
+  <div class="grid3" id="syllabusGrid"></div>
+</section>
+
+<section id="plan" class="page">
+  <div class="section-title"><h2>🗓️ 90-Day Master Plan</h2><span class="muted">Tick each day after completion</span></div>
+  <div class="alert">This planner is a study framework. Always cross-check the latest TGPRB notification for the official exam pattern, dates and post-specific requirements.</div>
+  <div id="planList"></div>
+</section>
+
+<section id="subjects" class="page">
+  <div class="section-title"><h2>📖 All Subjects</h2></div>
+  <div class="grid3" id="subjectGrid"></div>
+</section>
+
+<section id="pyq" class="page">
+  <div class="section-title"><h2>📝 Previous Year Questions</h2><span class="muted">Practice tracker</span></div>
+  <div class="grid3" id="pyqGrid"></div>
+</section>
+
+<section id="mocks" class="page">
+  <div class="section-title"><h2>🎯 Mock Tests</h2><span class="muted">Instant scoring</span></div>
+  <div class="grid3" id="mockGrid"></div>
+  <div id="quizArea"></div>
+</section>
+
+<section id="current" class="page">
+  <div class="section-title"><h2>📰 Current Affairs</h2><span class="badge">Update regularly</span></div>
+  <div class="alert">Use this page as your monthly current-affairs notebook. Replace the sample cards with verified daily news before treating them as study facts.</div>
+  <div class="grid3" id="currentGrid"></div>
+</section>
+
+<section id="tg" class="page">
+  <div class="section-title"><h2>🟢 Telangana GK</h2></div>
+  <input class="search" id="tgSearch" placeholder="Search Telangana topic..." oninput="renderTG()">
+  <div class="grid3" id="tgGrid"></div>
+</section>
+
+<section id="progress" class="page">
+  <div class="section-title"><h2>📊 Progress Dashboard</h2><button class="btn" onclick="resetProgress()">Reset</button></div>
+  <div class="grid">
+    <div class="card"><div class="muted">90-Day Plan</div><div class="big" id="pDays">0%</div><div class="progress"><i id="barDays"></i></div></div>
+    <div class="card"><div class="muted">PYQs</div><div class="big" id="pPyq">0%</div><div class="progress"><i id="barPyq"></i></div></div>
+    <div class="card"><div class="muted">Mocks</div><div class="big" id="pMocks">0%</div><div class="progress"><i id="barMocks"></i></div></div>
+    <div class="card"><div class="muted">Topics</div><div class="big" id="pTopics">0%</div><div class="progress"><i id="barTopics"></i></div></div>
+  </div>
+  <div class="section-title"><h2>Study Streak</h2></div>
+  <div class="card"><h3 id="streakText">Start today.</h3><p class="muted">Your completed days are stored only in this browser using local storage.</p></div>
+</section>
+
+</main>
+<footer>TS Constable Master Prep • Personal study website • Built as a single-file offline-friendly app</footer>
+
+<script>
+const subjects = [
+ {id:"english",name:"English",icon:"🔤",topics:["Grammar","Vocabulary","Comprehension","Verbal Ability","Sentence Correction","Synonyms & Antonyms"]},
+ {id:"arithmetic",name:"Arithmetic",icon:"🧮",topics:["Number System","Simplification","HCF & LCM","Ratio & Proportion","Average","Percentage","Profit & Loss","Simple Interest","Compound Interest","Time & Work","Work & Wages","Time & Distance","Clocks & Calendars","Partnership","Mensuration","Data Interpretation"]},
+ {id:"reasoning",name:"Reasoning / Mental Ability",icon:"🧠",topics:["Analogy","Series","Coding-Decoding","Classification","Blood Relations","Directions","Ranking","Puzzle","Seating Arrangement","Syllogism","Venn Diagram","Spatial Visualization","Spatial Orientation","Problem Solving","Decision Making","Visual Memory"]},
+ {id:"science",name:"General Science",icon:"🔬",topics:["Physics","Chemistry","Biology","Human Body","Everyday Science","Environment","Science & Technology"]},
+ {id:"history",name:"Indian History & Culture",icon:"🏛️",topics:["Ancient India","Medieval India","Modern India","Indian National Movement","Art & Culture","Important Personalities"]},
+ {id:"geo",name:"Geography",icon:"🌍",topics:["World Geography","Indian Geography","Physical Geography","Rivers & Projects","Climate","Soils","Agriculture","Natural Resources"]},
+ {id:"polity",name:"Indian Polity & Economy",icon:"⚖️",topics:["Constitution","Fundamental Rights","DPSP","Parliament","President","Judiciary","State Government","Local Government","Economy Basics","Rural Development","Planning & Reforms"]},
+ {id:"ca",name:"Current Affairs",icon:"📰",topics:["National","International","Telangana","Awards","Sports","Appointments","Defence","Reports & Indexes","Government Schemes","Science & Technology"]},
+ {id:"telangana",name:"Telangana GK",icon:"🟢",topics:["Telangana History","Idea of Telangana 1948–1970","Mobilization 1971–1990","State Formation 1991–2014","Culture","Literature","Geography","Economy","Government Schemes","Rivers & Projects","Districts","Important Personalities"]},
+ {id:"personality",name:"Personality / Ethics",icon:"🤝",topics:["Ethics","Sensitivity to Gender","Weaker Sections","Social Awareness","Emotional Intelligence"]},
+];
+const pyqs=[
+ ["2023 Mains","200 questions","English / Telugu"],
+ ["2022 Prelims","200 questions","English / Telugu"],
+ ["2018 Prelims","200 questions","English / Telugu"],
+ ["2018 Mains","200 questions","English / Telugu"],
+ ["2015 Prelims","200 questions","English / Telugu"],
+ ["2015 Mains","200 questions","English / Telugu"]
+];
+const current=[
+ ["National Affairs","Make a monthly notes list from verified sources.","Monthly"],
+ ["Telangana Affairs","Track state government, schemes, projects and appointments.","Monthly"],
+ ["Awards & Honours","Create one-line revision notes.","Monthly"],
+ ["Sports","Record major national/international events.","Monthly"],
+ ["Reports & Indexes","Note issuing body + India's position when verified.","Monthly"],
+ ["Science & Technology","Track major developments and applications.","Monthly"]
+];
+const tgTopics=[
+ ["Telangana History","From Hyderabad State and integration to modern Telangana."],
+ ["Telangana Movement","Idea of Telangana (1948–1970), mobilisation (1971–1990), formation (1991–2014)."],
+ ["State Formation","Key milestones, committees, legislation and formation process."],
+ ["Geography","Districts, rivers, irrigation projects, soils, climate and resources."],
+ ["Culture","Festivals, folk arts, literature, monuments and traditions."],
+ ["Economy","Agriculture, industries, services, welfare and rural development."],
+ ["Government Schemes","Maintain a verified scheme → department → objective table."],
+ ["Important Personalities","Build a timeline of major Telangana personalities and contributions."]
+];
+
+function getState(){return JSON.parse(localStorage.getItem("tscp")||'{"days":[],"pyq":[],"mocks":0,"topics":[]}')}
+function save(s){localStorage.setItem("tscp",JSON.stringify(s)); updateDashboard()}
+function showPage(id){
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".menu button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ if(id==="syllabus")renderSyllabus(); if(id==="plan")renderPlan(); if(id==="subjects")renderSubjects(); if(id==="pyq")renderPYQ(); if(id==="mocks")renderMocks(); if(id==="current")renderCurrent(); if(id==="tg")renderTG(); if(id==="progress")updateDashboard();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+const nav=[["home","Home"],["syllabus","Syllabus"],["plan","90-Day Plan"],["subjects","Subjects"],["pyq","PYQs"],["mocks","Mock Tests"],["current","Current Affairs"],["tg","Telangana GK"],["progress","Progress"]];
+document.getElementById("menu").innerHTML=nav.map(([id,n])=>`<button data-page="${id}" onclick="showPage('${id}')">${n}</button>`).join("");
+function renderSyllabus(){
+ const q=(document.getElementById("sySearch")?.value||"").toLowerCase();
+ document.getElementById("syllabusGrid").innerHTML=subjects.filter(s=>(s.name+" "+s.topics.join(" ")).toLowerCase().includes(q)).map(s=>`
+ <div class="card"><div class="icon">${s.icon}</div><h3>${s.name}</h3>${s.topics.map(t=>`<span class="tag">${t}</span>`).join("")}</div>`).join("");
+}
+function renderSubjects(){
+ document.getElementById("subjectGrid").innerHTML=subjects.map(s=>`<div class="card subject" onclick="openSubject('${s.id}')"><div class="icon">${s.icon}</div><h3>${s.name}</h3><p class="muted">${s.topics.length} chapters</p><div class="progress"><i style="width:${topicProgress(s)}%"></i></div></div>`).join("");
+}
+function openSubject(id){
+ const s=subjects.find(x=>x.id===id); alert(s.name+"\\n\\n"+s.topics.map((t,i)=>`${i+1}. ${t}`).join("\\n"));
+}
+function topicProgress(s){let st=getState();return Math.round(s.topics.filter(t=>st.topics.includes(s.id+"|"+t)).length/s.topics.length*100)}
+function renderPYQ(){
+ document.getElementById("pyqGrid").innerHTML=pyqs.map((p,i)=>`<div class="card"><h3>${p[0]}</h3><p>${p[1]} • ${p[2]}</p><button class="btn" onclick="markPYQ(${i})">${getState().pyq.includes(i)?"✓ Completed":"Mark Completed"}</button></div>`).join("");
+}
+function markPYQ(i){let s=getState();if(!s.pyq.includes(i))s.pyq.push(i);save(s);renderPYQ()}
+function renderCurrent(){document.getElementById("currentGrid").innerHTML=current.map(c=>`<div class="card"><h3>${c[0]}</h3><p>${c[1]}</p><span class="tag">${c[2]}</span></div>`).join("")}
+function renderTG(){
+ const q=(document.getElementById("tgSearch")?.value||"").toLowerCase();
+ document.getElementById("tgGrid").innerHTML=tgTopics.filter(x=>x.join(" ").toLowerCase().includes(q)).map(x=>`<div class="card"><h3>${x[0]}</h3><p class="muted">${x[1]}</p><button class="btn light" onclick="alert('Add detailed notes here as you study: ${x[0].replace(/'/g,"\\'")}')">Study Topic</button></div>`).join("");
+}
+const planTopics=[
+ ["Arithmetic","Number System + Simplification","50 questions"],
+ ["Reasoning","Analogy + Classification","40 questions"],
+ ["GS","Physics basics","30 questions"],
+ ["History","Ancient India","30 questions"],
+ ["Telangana","Telangana History basics","30 questions"],
+ ["English","Grammar basics","30 questions"],
+ ["Arithmetic","Percentage","50 questions"],
+ ["Reasoning","Series","40 questions"],
+ ["GS","Chemistry basics","30 questions"],
+ ["Polity","Constitution basics","30 questions"],
+ ["Telangana","Telangana Geography","30 questions"],
+ ["CA","National current affairs","20 questions"],
+ ["Arithmetic","Ratio & Proportion","50 questions"],
+ ["Reasoning","Coding-Decoding","40 questions"],
+ ["GS","Biology basics","30 questions"],
+ ["History","Medieval India","30 questions"],
+ ["Telangana","Culture & Literature","30 questions"],
+ ["English","Vocabulary","30 questions"],
+ ["Arithmetic","Average","50 questions"],
+ ["Reasoning","Blood Relations + Directions","40 questions"],
+ ["GS","Environment","30 questions"],
+ ["Polity","Fundamental Rights + DPSP","30 questions"],
+ ["Telangana","Movement 1948–1970","30 questions"],
+ ["CA","Telangana current affairs","20 questions"],
+ ["Arithmetic","Profit & Loss","50 questions"],
+ ["Reasoning","Ranking + Alphabet","40 questions"],
+ ["History","Modern India","30 questions"],
+ ["Geography","Indian Geography","30 questions"],
+ ["Telangana","Movement 1971–1990","30 questions"],
+ ["English","Comprehension","30 questions"],
+ ["Arithmetic","SI + CI","50 questions"],
+ ["Reasoning","Syllogism","40 questions"],
+ ["GS","Human Body","30 questions"],
+ ["Polity","Parliament + President","30 questions"],
+ ["Telangana","State Formation 1991–2014","30 questions"],
+ ["CA","Awards + Sports","20 questions"],
+ ["Arithmetic","Time & Work","50 questions"],
+ ["Reasoning","Venn Diagrams","40 questions"],
+ ["History","National Movement","30 questions"],
+ ["Geography","Rivers + Climate","30 questions"],
+ ["Telangana","Rivers & Projects","30 questions"],
+ ["English","Sentence Correction","30 questions"],
+ ["Arithmetic","Time, Speed & Distance","50 questions"],
+ ["Reasoning","Puzzle basics","40 questions"],
+ ["GS","Science & Technology","30 questions"],
+ ["Polity","Judiciary + State Government","30 questions"],
+ ["Telangana","Economy","30 questions"],
+ ["CA","Reports + Appointments","20 questions"],
+ ["Arithmetic","Partnership","50 questions"],
+ ["Reasoning","Seating Arrangement","40 questions"],
+ ["History","Art & Culture","30 questions"],
+ ["Geography","Soils + Agriculture","30 questions"],
+ ["Telangana","Government Schemes","30 questions"],
+ ["English","Synonyms & Antonyms","30 questions"],
+ ["Arithmetic","Mensuration","50 questions"],
+ ["Reasoning","Clock & Calendar","40 questions"],
+ ["GS","Everyday Science","30 questions"],
+ ["Polity","Economy basics","30 questions"],
+ ["Telangana","Important Personalities","30 questions"],
+ ["CA","Defence + Science CA","20 questions"],
+ ["Arithmetic","Data Interpretation","50 questions"],
+ ["Reasoning","Spatial Visualization","40 questions"],
+ ["GS","Physics revision","40 questions"],
+ ["History","Ancient + Medieval revision","40 questions"],
+ ["Telangana","Full Telangana GK revision","50 questions"],
+ ["English","Full English revision","40 questions"],
+ ["Arithmetic","Arithmetic mixed set","60 questions"],
+ ["Reasoning","Reasoning mixed set","60 questions"],
+ ["GS","General Science mixed set","50 questions"],
+ ["Polity","Polity mixed set","50 questions"],
+ ["Telangana","Telangana mixed set","50 questions"],
+ ["CA","Monthly CA revision","50 questions"],
+ ["PYQ","2015 paper practice","200 questions"],
+ ["PYQ","2018 paper practice","200 questions"],
+ ["PYQ","2022 paper practice","200 questions"],
+ ["PYQ","2023 paper practice","200 questions"],
+ ["Mock","Full Mock 1","200 questions"],
+ ["Mock","Full Mock 2","200 questions"],
+ ["Mock","Full Mock 3","200 questions"],
+ ["Mock","Full Mock 4","200 questions"],
+ ["Mock","Full Mock 5","200 questions"],
+ ["Revision","Weak topics revision","100 questions"],
+ ["Revision","Formula + facts revision","100 questions"],
+ ["Revision","Telangana final revision","100 questions"],
+ ["Revision","Current affairs final revision","100 questions"],
+ ["Mock","Grand Mock 1","200 questions"],
+ ["Mock","Grand Mock 2","200 questions"],
+ ["Mock","Grand Mock 3","200 questions"],
+ ["Mock","Grand Mock 4","200 questions"],
+ ["Final","Full syllabus revision","200 questions"],
+ ["Final","Final mock + analysis","200 questions"],
+ ["Final","Light revision + exam strategy","—"]
+];
+function renderPlan(){
+ let s=getState();
+ document.getElementById("planList").innerHTML=planTopics.map((x,i)=>`<div class="card day ${s.days.includes(i)?"done":""}" style="margin:10px 0"><label><input type="checkbox" ${s.days.includes(i)?"checked":""} onchange="toggleDay(${i})"> <b>Day ${i+1}</b> — ${x[0]}</label><div class="topic-row"><span>${x[1]}</span><span class="muted">${x[2]}</span></div></div>`).join("");
+}
+function toggleDay(i){let s=getState();s.days.includes(i)?s.days=s.days.filter(x=>x!==i):s.days.push(i);save(s);renderPlan()}
+const mockQuestions=[
+ {q:"Which number is 25% of 240?",o:["40","50","60","80"],a:2},
+ {q:"If A:B = 2:3 and B:C = 4:5, then A:C is:",o:["8:15","2:5","4:15","6:5"],a:0},
+ {q:"Find the next number: 2, 6, 12, 20, 30, ?",o:["36","40","42","44"],a:2},
+ {q:"The Constitution of India came into force on:",o:["15 Aug 1947","26 Jan 1950","26 Nov 1949","2 Oct 1950"],a:1},
+ {q:"The Telangana State was formed in:",o:["2012","2013","2014","2015"],a:2}
+];
+function renderMocks(){
+ document.getElementById("mockGrid").innerHTML=[
+ ["Daily Mini Mock","10 questions","mixed"],["Arithmetic Test","25 questions","arithmetic"],["Reasoning Test","25 questions","reasoning"],["General Studies Test","25 questions","gs"],["Telangana GK Test","25 questions","tg"],["Full Mock","200 questions","full"]
+ ].map((m,i)=>`<div class="card"><h3>${m[0]}</h3><p>${m[1]} • ${m[2]}</p><button class="btn" onclick="startMock(${i})">Start</button></div>`).join("");
+}
+function startMock(i){
+ const qs=mockQuestions.slice(0,i===5?5:Math.min(3+ i,5)); let idx=0,score=0;
+ const area=document.getElementById("quizArea");
+ function show(){
+  if(idx>=qs.length){let s=getState();s.mocks++;save(s);area.innerHTML=`<div class="card quiz"><h2>Mock Complete 🎉</h2><p class="big">${score}/${qs.length}</p><button class="btn" onclick="renderMocks();area.innerHTML=''">Back to mocks</button></div>`;return}
+  let q=qs[idx];area.innerHTML=`<div class="card quiz"><span class="tag">Question ${idx+1}/${qs.length}</span><h3>${q.q}</h3>${q.o.map((o,j)=>`<button class="option" onclick="answer(${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join("")}</div>`;
+  window.answer=(j)=>{document.querySelectorAll(".option").forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add("correct");if(k===j&&j!==q.a)b.classList.add("wrong")});if(j===q.a)score++;setTimeout(()=>{idx++;show()},650)}
+ }
+ show();area.scrollIntoView({behavior:"smooth"});
+}
+function updateDashboard(){
+ let s=getState(),days=s.days.length,pyq=s.pyq.length,mocks=s.mocks;
+ let topics=s.topics.length; let overall=Math.min(100,Math.round((days/90*50)+(pyq/pyqs.length*20)+(Math.min(mocks,10)/10*15)+(Math.min(topics,30)/30*15)));
+ document.getElementById("daysDone").textContent=days+"/90";document.getElementById("topicsDone").textContent=topics;document.getElementById("mockDone").textContent=mocks;document.getElementById("overall").textContent=overall+"%";
+ document.getElementById("pDays").textContent=Math.round(days/90*100)+"%";document.getElementById("barDays").style.width=Math.min(100,days/90*100)+"%";
+ document.getElementById("pPyq").textContent=Math.round(pyq/pyqs.length*100)+"%";document.getElementById("barPyq").style.width=pyq/pyqs.length*100+"%";
+ document.getElementById("pMocks").textContent=Math.min(100,mocks*10)+"%";document.getElementById("barMocks").style.width=Math.min(100,mocks*10)+"%";
+ document.getElementById("pTopics").textContent=Math.min(100,Math.round(topics/30*100))+"%";document.getElementById("barTopics").style.width=Math.min(100,topics/30*100)+"%";
+ document.getElementById("streakText").textContent=days?`You have completed ${days} planned study day${days===1?"":"s"}. Keep going!`:"Start your first study day today.";
+}
+function resetProgress(){if(confirm("Reset all local progress?")){localStorage.removeItem("tscp");updateDashboard();renderPlan();renderPYQ()}}
+document.getElementById("today").innerHTML=[
+ ["🧮","Arithmetic","Percentage + Ratio","50 practice questions"],
+ ["🧠","Reasoning","Series + Coding","40 practice questions"],
+ ["🟢","Telangana GK","History + Movement","30 practice questions"]
+].map(x=>`<div class="card"><div class="icon">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p><span class="tag">${x[3]}</span></div>`).join("");
+renderSyllabus();renderSubjects();renderPYQ();renderMocks();renderCurrent();renderTG();updateDashboard();
+</script>
+</body>
+</html>
